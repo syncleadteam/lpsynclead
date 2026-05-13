@@ -5,7 +5,14 @@ export function Hero() {
         Next-Gen Automation
       </span>
       <h1 className="font-display text-4xl md:text-7xl font-light leading-[1.05] mb-8 text-foreground text-balance">
-        Sua empresa em <span className="italic font-normal text-primary">piloto automático</span> com IA
+        Sua empresa em{" "}
+        <span
+          className="italic font-normal bg-clip-text text-transparent"
+          style={{ backgroundImage: "var(--gradient-primary)" }}
+        >
+          piloto automático
+        </span>{" "}
+        com IA
       </h1>
       <p className="text-muted-foreground text-base md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
         Configure seu ecossistema de atendimento inteligente em minutos. Agentes autônomos que vendem,
@@ -13,7 +20,8 @@ export function Hero() {
       </p>
       <a
         href="#formulario"
-        className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-medium rounded-xl hover:brightness-110 transition-all shadow-[0_0_40px_-5px_hsl(217_91%_60%/0.5)]"
+        className="inline-flex items-center gap-2 px-8 py-4 text-primary-foreground font-medium rounded-xl hover:brightness-110 transition-all"
+        style={{ background: "var(--gradient-primary)", boxShadow: "var(--shadow-glow)" }}
       >
         Configurar minha automação
       </a>
