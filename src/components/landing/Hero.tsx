@@ -1,0 +1,22 @@
+export function Hero() {
+  return (
+    <header className="pt-12 md:pt-20 pb-12 md:pb-16 px-6 text-center max-w-4xl mx-auto">
+      <span className="px-3 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-semibold tracking-wider uppercase mb-6 inline-block italic">
+        Next-Gen Automation
+      </span>
+      <h1 className="font-display text-4xl md:text-7xl font-light leading-[1.05] mb-8 text-foreground text-balance">
+        Sua empresa em <span className="italic font-normal text-primary">piloto automático</span> com IA
+      </h1>
+      <p className="text-muted-foreground text-base md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+        Configure seu ecossistema de atendimento inteligente em minutos. Agentes autônomos que vendem,
+        agendam e suportam 24/7 — direto no WhatsApp.
+      </p>
+      <a
+        href="#formulario"
+        className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-medium rounded-xl hover:brightness-110 transition-all shadow-[0_0_40px_-5px_hsl(217_91%_60%/0.5)]"
+      >
+        Configurar minha automação
+      </a>
+    </header>
+  );
+}
