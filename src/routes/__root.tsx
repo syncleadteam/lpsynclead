@@ -72,20 +72,26 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Axon.AI — Automação de Atendimento com IA no WhatsApp" },
+      { title: "Sync Lead — Automação de Atendimento com IA no WhatsApp" },
       {
         name: "description",
         content:
           "Configure agentes autônomos de atendimento, vendas e suporte direto no WhatsApp. Orçamento personalizado em minutos.",
       },
       { name: "author", content: "Axon.AI" },
-      { property: "og:title", content: "Axon.AI — Automação de Atendimento com IA" },
+      { property: "og:title", content: "Sync Lead — Automação de Atendimento com IA no WhatsApp" },
       {
         property: "og:description",
         content: "Agentes IA que vendem, agendam e suportam 24/7 no seu WhatsApp.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Sync Lead — Automação de Atendimento com IA no WhatsApp" },
+      { name: "description", content: "Aura AI captures leads and generates AI automation quotes via a modern, multi-step form." },
+      { property: "og:description", content: "Aura AI captures leads and generates AI automation quotes via a modern, multi-step form." },
+      { name: "twitter:description", content: "Aura AI captures leads and generates AI automation quotes via a modern, multi-step form." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9b40e022-0257-473e-9b78-7d2bfbdd5f63/id-preview-5401b7bf--351882c7-a049-4bf1-b9b5-9bab803d997c.lovable.app-1778715814154.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9b40e022-0257-473e-9b78-7d2bfbdd5f63/id-preview-5401b7bf--351882c7-a049-4bf1-b9b5-9bab803d997c.lovable.app-1778715814154.png" },
     ],
     links: [
       {
