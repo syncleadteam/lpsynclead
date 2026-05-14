@@ -119,6 +119,7 @@ export type Database = {
           client_id: string
           created_at: string
           id: string
+          observations: string | null
           status: string
           subtotal: number
           total_price: number
@@ -128,6 +129,7 @@ export type Database = {
           client_id: string
           created_at?: string
           id?: string
+          observations?: string | null
           status?: string
           subtotal?: number
           total_price?: number
@@ -137,6 +139,7 @@ export type Database = {
           client_id?: string
           created_at?: string
           id?: string
+          observations?: string | null
           status?: string
           subtotal?: number
           total_price?: number
