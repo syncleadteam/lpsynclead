@@ -5,13 +5,14 @@ import { useLeadForm, TOTAL_STEPS } from "@/hooks/useLeadForm";
 import { StepShell } from "./StepShell";
 import { Step1Client } from "./Step1Client";
 import { Step2Agents } from "./Step2Agents";
-import { ToggleQuestion } from "./ToggleQuestion";
+import { Step3Modules } from "./Step3Modules";
+import { Step4Observations } from "./Step4Observations";
 import { SuccessScreen } from "./SuccessScreen";
 
 const stepperGroups = [
-  { label: "Perfil & Escopo", steps: [1] },
-  { label: "Agentes & Módulos", steps: [2, 3, 4, 5, 6, 7, 8, 9] },
-  { label: "Resumo & Ativação", steps: [] },
+  { label: "Perfil", steps: [1] },
+  { label: "Agentes & Módulos", steps: [2, 3] },
+  { label: "Observações & Envio", steps: [4] },
 ];
 
 export function LeadForm() {
@@ -120,60 +121,17 @@ export function LeadForm() {
                       error={f.errors.agents_quantity}
                     />
                   )}
-                  {f.step === 3 && (
-                    <ToggleQuestion
-                      title="Quer que a IA responda dúvidas frequentes?"
-                      description="Treinamos a IA com seu FAQ para resolver as perguntas mais comuns instantaneamente."
-                      value={f.state.toggles.faq_ai}
-                      onChange={(v) => f.setToggle("faq_ai", v)}
+                  {f.step === 3 && f.state.agents_quantity && (
+                    <Step3Modules
+                      agentsQuantity={f.state.agents_quantity}
+                      toggles={f.state.toggles}
+                      onToggle={f.setToggle}
                     />
                   )}
                   {f.step === 4 && (
-                    <ToggleQuestion
-                      title="Quer que a IA tenha repertório técnico avançado?"
-                      description="Base de conhecimento profunda sobre seus produtos, serviços e processos."
-                      value={f.state.toggles.technical_ai}
-                      onChange={(v) => f.setToggle("technical_ai", v)}
-                    />
-                  )}
-                  {f.step === 5 && (
-                    <ToggleQuestion
-                      title="Quer agendamentos automáticos?"
-                      description="A IA marca, remarca e cancela compromissos direto na sua agenda."
-                      value={f.state.toggles.auto_scheduling}
-                      onChange={(v) => f.setToggle("auto_scheduling", v)}
-                    />
-                  )}
-                  {f.step === 6 && (
-                    <ToggleQuestion
-                      title="Quer lembretes automáticos para clientes?"
-                      description="Reduz no-show e mantém engajamento sem esforço manual."
-                      value={f.state.toggles.automatic_reminders}
-                      onChange={(v) => f.setToggle("automatic_reminders", v)}
-                    />
-                  )}
-                  {f.step === 7 && (
-                    <ToggleQuestion
-                      title="Quer notificações em grupo do WhatsApp?"
-                      description="Resumos diários, alertas e leads quentes direto no grupo do time."
-                      value={f.state.toggles.whatsapp_group_notifications}
-                      onChange={(v) => f.setToggle("whatsapp_group_notifications", v)}
-                    />
-                  )}
-                  {f.step === 8 && (
-                    <ToggleQuestion
-                      title="Quer envio automático de PDFs, imagens e arquivos?"
-                      description="A IA envia catálogos, contratos e mídias no momento certo da conversa."
-                      value={f.state.toggles.media_sending}
-                      onChange={(v) => f.setToggle("media_sending", v)}
-                    />
-                  )}
-                  {f.step === 9 && (
-                    <ToggleQuestion
-                      title="Quer ativação ou disparo em massa de contatos?"
-                      description="Campanhas segmentadas com controle de fluxo e personalização."
-                      value={f.state.toggles.bulk_messaging}
-                      onChange={(v) => f.setToggle("bulk_messaging", v)}
+                    <Step4Observations
+                      value={f.state.observations}
+                      onChange={f.setObservations}
                     />
                   )}
                 </StepShell>
