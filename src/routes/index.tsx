@@ -29,7 +29,7 @@ function Index() {
       <div className="bg-card/30">
         <HowItWorks />
       </div>
-      <main id="formulario" className="max-w-5xl mx-auto px-6 pb-20">
+      <main className="max-w-5xl mx-auto px-6 pb-20">
         <LeadForm />
       </main>
       <div className="bg-card/30">
