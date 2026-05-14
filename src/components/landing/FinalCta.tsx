@@ -7,7 +7,7 @@ const WHATSAPP_MESSAGE =
 export function FinalCta() {
   const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
   return (
-    <section className="py-20 md:py-32 px-6">
+    <section id="contato" className="py-14 md:py-20 px-6">
       <div
         className="relative max-w-4xl mx-auto rounded-3xl border border-white/10 p-10 md:p-16 text-center overflow-hidden"
         style={{ background: "var(--gradient-primary)" }}
@@ -27,8 +27,7 @@ export function FinalCta() {
             </span>
           </h2>
           <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto mb-10">
-            Fale agora com nossa equipe pelo WhatsApp — e veja, ironicamente, nosso próprio
-            chatbot em ação.
+            Fale agora com nossa equipe pelo WhatsApp — e veja, nosso próprio chatbot em ação.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a

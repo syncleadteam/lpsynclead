@@ -22,13 +22,19 @@ function Index() {
       <Header />
       <Hero />
       <PainSection />
-      <SolutionSection />
+      <div className="bg-card/30">
+        <SolutionSection />
+      </div>
       <BenefitsSection />
-      <main id="modulos" className="max-w-5xl mx-auto px-6 pb-24">
+      <div className="bg-card/30">
+        <HowItWorks />
+      </div>
+      <main className="max-w-5xl mx-auto px-6 pb-20">
         <LeadForm />
       </main>
-      <HowItWorks />
-      <FaqSection />
+      <div className="bg-card/30">
+        <FaqSection />
+      </div>
       <FinalCta />
       <Footer />
     </div>

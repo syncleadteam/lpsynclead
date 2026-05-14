@@ -26,7 +26,7 @@ const benefits = [
 
 export function BenefitsSection() {
   return (
-    <section id="beneficios" className="py-20 md:py-32 px-6 max-w-5xl mx-auto">
+    <section id="beneficios" className="py-14 md:py-20 px-6 max-w-5xl mx-auto">
       <div className="mb-14 max-w-2xl">
         <span className="text-xs uppercase tracking-widest text-primary font-medium">
           Resultados

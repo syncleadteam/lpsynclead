@@ -20,7 +20,7 @@ const items = [
 
 export function SolutionSection() {
   return (
-    <section id="solucao" className="py-20 md:py-32 px-6 max-w-5xl mx-auto">
+    <section id="solucao" className="py-14 md:py-20 px-6 max-w-5xl mx-auto">
       <div className="mb-14 max-w-2xl">
         <span className="text-xs uppercase tracking-widest text-primary font-medium">
           A solução
