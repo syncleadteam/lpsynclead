@@ -5,7 +5,7 @@ export function Hero() {
         Next-Gen Automation
       </span>
       <h1 className="font-display text-4xl md:text-7xl font-light leading-[1.05] mb-8 text-foreground text-balance">
-        Sua empresa em{" "}
+        Sua empresa no{" "}
         <span
           className="italic font-normal bg-clip-text text-transparent"
           style={{ backgroundImage: "var(--gradient-primary)" }}
@@ -15,8 +15,9 @@ export function Hero() {
         com IA
       </h1>
       <p className="text-muted-foreground text-base md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-        Configure seu ecossistema de atendimento inteligente em minutos. Agentes autônomos que vendem,
-        agendam e suportam 24/7 — direto no WhatsApp.
+        Configure seu ecossistema de atendimento inteligente em minutos. Agentes autônomos que
+        atendem, vendem, agendam e oferecem suporte 24 horas por dia 7 dias da semana — direto no
+        WhatsApp.
       </p>
       <a
         href="#formulario"
