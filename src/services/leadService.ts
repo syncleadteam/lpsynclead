@@ -37,6 +37,7 @@ export async function submitLead(state: FormState): Promise<SubmitResult> {
       client_id: client.id,
       agents_quantity: state.agents_quantity,
       status: "rascunho",
+      observations: state.observations?.trim() || null,
     })
     .select("id")
     .single();
