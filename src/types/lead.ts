@@ -27,7 +27,8 @@ export type ModuleCode =
   | "automatic_reminders"
   | "whatsapp_group_notifications"
   | "media_sending"
-  | "bulk_messaging";
+  | "bulk_messaging"
+  | "followup";
 
 export interface FormState {
   client: ClientData;
@@ -40,7 +41,9 @@ export interface FormState {
     whatsapp_group_notifications: boolean;
     media_sending: boolean;
     bulk_messaging: boolean;
+    followup: boolean;
   };
+  observations: string;
 }
 
 export interface SubmitResult {
@@ -66,5 +69,7 @@ export const initialFormState: FormState = {
     whatsapp_group_notifications: false,
     media_sending: false,
     bulk_messaging: false,
+    followup: false,
   },
+  observations: "",
 };
