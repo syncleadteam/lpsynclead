@@ -18,7 +18,7 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id="tecnologia" className="py-20 md:py-32 px-6 max-w-5xl mx-auto">
+    <section id="tecnologia" className="py-14 md:py-20 px-6 max-w-5xl mx-auto">
       <div className="mb-16 max-w-2xl">
         <span className="text-xs uppercase tracking-widest text-primary font-medium">
           Como funciona
