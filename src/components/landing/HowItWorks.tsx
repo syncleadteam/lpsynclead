@@ -11,7 +11,7 @@ const steps = [
   },
   {
     n: "03",
-    title: "Vai ao ar no WhatsApp",
+    title: "Conectamos ao seu WhatsApp",
     desc: "Integração direta com seu número e CRM. Resultados mensuráveis em dias, não meses.",
   },
 ];
