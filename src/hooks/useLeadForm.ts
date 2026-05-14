@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import { clientSchema, initialFormState, type FormState, type SubmitResult } from "@/types/lead";
 import { submitLead } from "@/services/leadService";
 
-export const TOTAL_STEPS = 9;
+export const TOTAL_STEPS = 4;
 
 export function useLeadForm() {
   const [step, setStep] = useState(1);
@@ -25,6 +25,11 @@ export function useLeadForm() {
   const setToggle = useCallback(
     (key: keyof FormState["toggles"], value: boolean) =>
       setState((s) => ({ ...s, toggles: { ...s.toggles, [key]: value } })),
+    [],
+  );
+
+  const setObservations = useCallback(
+    (v: string) => setState((s) => ({ ...s, observations: v })),
     [],
   );
 
@@ -79,6 +84,7 @@ export function useLeadForm() {
     updateClient,
     setAgents,
     setToggle,
+    setObservations,
     next,
     back,
     submit,
