@@ -1,5 +1,6 @@
 import { Check } from "lucide-react";
 import type { AgentsQuantity, FormState } from "@/types/lead";
+import { MODULE_PRICES, agentsTotal, brl } from "@/lib/pricing";
 
 type ModuleKey = keyof FormState["toggles"];
 type AgentKind = "atendimento" | "vendas" | "suporte";
@@ -37,6 +38,10 @@ interface Props {
 export function Step3Modules({ agentsQuantity, toggles, onToggle }: Props) {
   const selectedAgents = AGENTS_BY_QTY[agentsQuantity];
   const visible = MODULES.filter((m) => m.agents.some((a) => selectedAgents.includes(a)));
+  const featuresTotal = visible
+    .filter((m) => toggles[m.key])
+    .reduce((sum, m) => sum + MODULE_PRICES[m.key], 0);
+  const grandTotal = agentsTotal(agentsQuantity) + featuresTotal;
 
   return (
     <div className="space-y-6">
@@ -51,6 +56,7 @@ export function Step3Modules({ agentsQuantity, toggles, onToggle }: Props) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {visible.map((m) => {
           const active = toggles[m.key];
+          const price = MODULE_PRICES[m.key];
           return (
             <button
               key={m.key}
@@ -73,9 +79,23 @@ export function Step3Modules({ agentsQuantity, toggles, onToggle }: Props) {
                 </span>
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed">{m.tip}</p>
+              <p className={`mt-3 font-mono text-xs ${active ? "text-primary" : "text-muted-foreground"}`}>
+                {brl(price)}<span className="text-muted-foreground">/mês</span>
+              </p>
             </button>
           );
         })}
+      </div>
+      <div className="flex items-center justify-between p-4 rounded-xl border border-primary/30 bg-primary/5">
+        <div>
+          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Investimento estimado</div>
+          <div className="text-xs text-muted-foreground mt-0.5">
+            Agentes {brl(agentsTotal(agentsQuantity))} + Módulos {brl(featuresTotal)}
+          </div>
+        </div>
+        <div className="font-display text-2xl font-medium text-primary">
+          {brl(grandTotal)}<span className="text-xs text-muted-foreground font-normal">/mês</span>
+        </div>
       </div>
     </div>
   );

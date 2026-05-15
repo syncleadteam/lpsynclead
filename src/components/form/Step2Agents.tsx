@@ -1,5 +1,6 @@
 import { Check } from "lucide-react";
 import type { AgentsQuantity } from "@/types/lead";
+import { agentsTotal, brl } from "@/lib/pricing";
 
 const options: { value: AgentsQuantity; count: string; label: string; desc: string }[] = [
   { value: "1_agente", count: "01", label: "Atendimento", desc: "Atendimento inteligente 24/7" },
@@ -37,6 +38,7 @@ export function Step2Agents({ value, onChange, error }: Props) {
       <div className="space-y-3">
         {options.map((opt) => {
           const selected = value === opt.value;
+          const price = agentsTotal(opt.value);
           return (
             <button
               key={opt.value}
@@ -58,6 +60,12 @@ export function Step2Agents({ value, onChange, error }: Props) {
               <span className="flex-1 min-w-0">
                 <span className="block font-medium text-foreground">{opt.label}</span>
                 <span className="block text-xs text-muted-foreground mt-0.5">{opt.desc}</span>
+              </span>
+              <span className="hidden sm:flex flex-col items-end shrink-0">
+                <span className={`font-mono text-sm ${selected ? "text-primary" : "text-foreground"}`}>
+                  {brl(price)}
+                </span>
+                <span className="text-[10px] uppercase tracking-widest text-muted-foreground">/mês</span>
               </span>
               <span
                 className={`size-5 rounded-full flex items-center justify-center shrink-0 ${

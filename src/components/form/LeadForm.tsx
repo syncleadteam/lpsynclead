@@ -11,15 +11,17 @@ import { SuccessScreen } from "./SuccessScreen";
 
 const stepperGroups = [
   { label: "Perfil", steps: [1] },
-  { label: "Agentes & Módulos", steps: [2, 3] },
-  { label: "Observações & Envio", steps: [4] },
+  { label: "Agentes", steps: [2] },
+  { label: "Módulos", steps: [3] },
+  { label: "Observações", steps: [4] },
+  { label: "Enviar", steps: [] as number[] },
 ];
 
 export function LeadForm() {
   const f = useLeadForm();
 
   const activeGroup = f.result
-    ? 2
+    ? 4
     : stepperGroups.findIndex((g) => g.steps.includes(f.step));
 
   async function handleNext() {
