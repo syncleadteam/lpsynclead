@@ -1,4 +1,4 @@
-import { CheckCircle2, MessageCircle } from "lucide-react";
+import { CheckCircle2, CalendarCheck } from "lucide-react";
 import type { SubmitResult } from "@/types/lead";
 
 const WHATSAPP_NUMBER = "5511999999999"; // ajuste para o número comercial
@@ -9,10 +9,10 @@ function brl(v: number) {
 
 export function SuccessScreen({ result, clientName }: { result: SubmitResult; clientName: string }) {
   const message = encodeURIComponent(
-    `Olá! Sou ${clientName}. Acabei de configurar minha automação na Axon.AI (orçamento ${result.quoteId.slice(
+    `Olá! Sou ${clientName}. Gostaria de agendar um teste da automação que configurei (orçamento ${result.quoteId.slice(
       0,
       8,
-    )}) e gostaria de avançar.`,
+    )}).`,
   );
   const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
 
@@ -24,10 +24,10 @@ export function SuccessScreen({ result, clientName }: { result: SubmitResult; cl
         </div>
         <div>
           <h3 className="font-display text-3xl font-light text-foreground mb-2">
-            Sua automação está pronta para decolar
+            Seu orçamento está pronto
           </h3>
           <p className="text-sm text-muted-foreground max-w-md">
-            Recebemos sua configuração. Veja abaixo o que foi montado para você.
+            Recebemos sua configuração. Confira o investimento estimado abaixo e agende um teste com nossa equipe.
           </p>
         </div>
       </div>
@@ -56,8 +56,8 @@ export function SuccessScreen({ result, clientName }: { result: SubmitResult; cl
         rel="noreferrer"
         className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-primary text-primary-foreground font-medium hover:brightness-110 transition-all shadow-[0_0_30px_-5px_hsl(217_91%_60%/0.5)]"
       >
-        <MessageCircle className="size-5" />
-        Falar com especialista no WhatsApp
+        <CalendarCheck className="size-5" />
+        Agendar Teste
       </a>
       <p className="text-xs text-muted-foreground/70 text-center">
         Estimativa preliminar. Valor final pode variar conforme escopo técnico.
