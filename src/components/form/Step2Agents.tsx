@@ -78,7 +78,7 @@ export function Step2Agents({ value, onChange, error }: Props) {
           );
         })}
       </div>
-      {error && <p className="text-xs text-destructive">{error}</p>}
+      {error && <p className="text-xs text-primary">{error}</p>}
     </div>
   );
 }
