@@ -39,7 +39,7 @@ export function Step1Client({ data, errors, onChange }: Props) {
               className="w-full px-4 py-3 rounded-lg bg-white/[0.02] border border-white/10 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:bg-white/[0.04] transition-all"
             />
             {errors[f.key] && (
-              <p className="mt-1.5 text-xs text-destructive">{errors[f.key]}</p>
+              <p className="mt-1.5 text-xs text-primary">{errors[f.key]}</p>
             )}
           </div>
         ))}
