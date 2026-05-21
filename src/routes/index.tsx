@@ -17,25 +17,27 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-primary/30">
+    <div className="min-h-screen bg-background text-foreground selection:bg-primary/30 pt-20">
       <Toaster theme="dark" position="top-center" />
       <Header />
       <Hero />
-      <PainSection />
       <div className="bg-card/30">
-        <SolutionSection />
+        <PainSection />
       </div>
-      <BenefitsSection />
+      <SolutionSection />
       <div className="bg-card/30">
-        <HowItWorks />
+        <BenefitsSection />
       </div>
-      <main className="max-w-5xl mx-auto px-6 pb-20">
-        <LeadForm />
-      </main>
+      <HowItWorks />
       <div className="bg-card/30">
-        <FaqSection />
+        <main className="max-w-5xl mx-auto px-6 py-14 md:py-20">
+          <LeadForm />
+        </main>
       </div>
-      <FinalCta />
+      <FaqSection />
+      <div className="bg-card/30">
+        <FinalCta />
+      </div>
       <Footer />
     </div>
   );

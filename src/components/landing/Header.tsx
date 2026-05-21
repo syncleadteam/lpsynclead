@@ -2,7 +2,8 @@ import logo from "@/assets/logo.png";
 
 export function Header() {
   return (
-    <nav className="flex items-center justify-between px-6 md:px-8 py-6 max-w-7xl mx-auto">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-lg border-b border-white/5">
+      <nav className="flex items-center justify-between px-6 md:px-8 py-4 max-w-7xl mx-auto">
       <a href="#" className="flex items-center gap-2">
         <img src={logo} alt="Axon.AI" className="h-8 w-auto" />
       </a>
@@ -21,6 +22,7 @@ export function Header() {
       >
         Começar
       </a>
-    </nav>
+      </nav>
+    </header>
   );
 }
