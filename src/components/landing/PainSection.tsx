@@ -40,11 +40,15 @@ export function PainSection() {
         {pains.map(({ icon: Icon, title, desc }) => (
           <div
             key={title}
-            className="rounded-2xl border border-white/5 bg-card/40 p-6 hover:border-primary/30 transition-colors"
+            className="relative rounded-2xl border border-white/10 p-6 overflow-hidden hover:border-primary/30 transition-colors"
+            style={{ background: "var(--gradient-primary)" }}
           >
-            <Icon className="text-primary mb-4" size={28} />
-            <h3 className="font-display text-lg font-medium text-foreground mb-2">{title}</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+            <div className="absolute inset-0 bg-background/70 backdrop-blur-xl" />
+            <div className="relative">
+              <Icon className="text-primary mb-4" size={28} />
+              <h3 className="font-display text-lg font-medium text-foreground mb-2">{title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+            </div>
           </div>
         ))}
       </div>

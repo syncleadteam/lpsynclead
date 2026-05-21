@@ -39,20 +39,24 @@ export function BenefitsSection() {
         {benefits.map(({ icon: Icon, title, desc, metric, label }) => (
           <div
             key={title}
-            className="rounded-2xl border border-white/5 bg-card/40 p-6 hover:border-accent/40 transition-colors"
+            className="relative rounded-2xl border border-white/10 p-6 overflow-hidden hover:border-accent/40 transition-colors"
+            style={{ background: "var(--gradient-primary)" }}
           >
-            <Icon className="text-accent mb-4" size={28} />
-            <div
-              className="font-display text-4xl font-light bg-clip-text text-transparent mb-1"
-              style={{ backgroundImage: "var(--gradient-primary)" }}
-            >
-              {metric}
+            <div className="absolute inset-0 bg-background/70 backdrop-blur-xl" />
+            <div className="relative">
+              <Icon className="text-accent mb-4" size={28} />
+              <div
+                className="font-display text-4xl font-light bg-clip-text text-transparent mb-1"
+                style={{ backgroundImage: "var(--gradient-primary)" }}
+              >
+                {metric}
+              </div>
+              <div className="text-xs uppercase tracking-wider text-muted-foreground mb-4">
+                {label}
+              </div>
+              <h3 className="font-display text-lg font-medium text-foreground mb-2">{title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
             </div>
-            <div className="text-xs uppercase tracking-wider text-muted-foreground mb-4">
-              {label}
-            </div>
-            <h3 className="font-display text-lg font-medium text-foreground mb-2">{title}</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
           </div>
         ))}
       </div>
