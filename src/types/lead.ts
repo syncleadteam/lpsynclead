@@ -48,6 +48,10 @@ export interface FormState {
 
 export interface SubmitResult {
   quoteId: string;
+  leadId: string;
+  companyId: string;
+  contactId: string;
+  activityId: string;
   modules: { code: ModuleCode; name: string; price: number }[];
   total: number;
 }

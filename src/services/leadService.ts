@@ -25,7 +25,7 @@ export async function submitLead(state: FormState): Promise<SubmitResult> {
     ...selectedFeatureModules(state.toggles),
   ];
 
-  const { data, error } = await supabase.rpc("submit_lead_quote", {
+  const { data, error } = await supabase.rpc("submit_landing_infrastructure_lead", {
     _client: state.client,
     _agents_quantity: state.agents_quantity,
     _module_codes: allCodes,
@@ -36,12 +36,20 @@ export async function submitLead(state: FormState): Promise<SubmitResult> {
 
   const result = data as {
     quoteId: string;
+    leadId: string;
+    companyId: string;
+    contactId: string;
+    activityId: string;
     modules: { code: ModuleCode; name: string; price: number | string }[];
     total: number | string;
   };
 
   return {
     quoteId: result.quoteId,
+    leadId: result.leadId,
+    companyId: result.companyId,
+    contactId: result.contactId,
+    activityId: result.activityId,
     modules: result.modules.map((m) => ({
       code: m.code,
       name: m.name,

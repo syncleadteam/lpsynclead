@@ -188,6 +188,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      submit_landing_infrastructure_lead: {
+        Args: {
+          _agents_quantity: string
+          _client: Json
+          _module_codes: string[]
+          _observations?: string
+        }
+        Returns: Json
+      }
       submit_lead_quote: {
         Args: {
           _agents_quantity: Database["public"]["Enums"]["agents_quantity_enum"]
