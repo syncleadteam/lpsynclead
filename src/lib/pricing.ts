@@ -1,27 +1,17 @@
-import type { AgentsQuantity, ModuleCode } from "@/types/lead";
+import type { AgentsQuantity, LandingCatalog, LandingProduct } from "@/types/lead";
 
-export const MODULE_PRICES: Record<ModuleCode, number> = {
-  attendance_agent: 497,
-  sales_agent: 597,
-  support_agent: 497,
-  faq_ai: 197,
-  technical_ai: 297,
-  auto_scheduling: 247,
-  automatic_reminders: 147,
-  whatsapp_group_notifications: 197,
-  media_sending: 197,
-  bulk_messaging: 297,
-  followup: 197,
-};
+export function agentCountFor(qty: AgentsQuantity): number {
+  if (qty === "1_agente") return 1;
+  if (qty === "2_agentes") return 2;
+  return 3;
+}
 
-export const AGENT_MODULES_BY_QTY: Record<AgentsQuantity, ModuleCode[]> = {
-  "1_agente": ["attendance_agent"],
-  "2_agentes": ["attendance_agent", "sales_agent"],
-  "3_agentes": ["attendance_agent", "sales_agent", "support_agent"],
-};
+export function agentModulesFor(qty: AgentsQuantity, catalog: LandingCatalog): LandingProduct[] {
+  return catalog.agents.slice(0, agentCountFor(qty));
+}
 
-export function agentsTotal(qty: AgentsQuantity): number {
-  return AGENT_MODULES_BY_QTY[qty].reduce((sum, c) => sum + MODULE_PRICES[c], 0);
+export function agentsTotal(qty: AgentsQuantity, catalog: LandingCatalog): number {
+  return agentModulesFor(qty, catalog).reduce((sum, product) => sum + product.price, 0);
 }
 
 export function brl(v: number): string {

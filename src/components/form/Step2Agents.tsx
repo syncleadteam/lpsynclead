@@ -1,30 +1,29 @@
 import { Check } from "lucide-react";
-import type { AgentsQuantity } from "@/types/lead";
+import type { AgentsQuantity, LandingCatalog } from "@/types/lead";
 import { agentsTotal, brl } from "@/lib/pricing";
-
-const options: { value: AgentsQuantity; count: string; label: string; desc: string }[] = [
-  { value: "1_agente", count: "01", label: "Atendimento", desc: "Atendimento inteligente 24/7" },
-  {
-    value: "2_agentes",
-    count: "02",
-    label: "Atendimento + Vendas",
-    desc: "Qualificação e fechamento automático",
-  },
-  {
-    value: "3_agentes",
-    count: "03",
-    label: "Atendimento + Vendas + Suporte",
-    desc: "Operação completa de IA conversacional",
-  },
-];
 
 interface Props {
   value: AgentsQuantity | null;
+  catalog: LandingCatalog;
   onChange: (v: AgentsQuantity) => void;
   error?: string;
 }
 
-export function Step2Agents({ value, onChange, error }: Props) {
+const quantities: AgentsQuantity[] = ["1_agente", "2_agentes", "3_agentes"];
+
+export function Step2Agents({ value, catalog, onChange, error }: Props) {
+  const options = quantities
+    .filter((qty, index) => catalog.agents.length >= index + 1)
+    .map((qty, index) => {
+      const agents = catalog.agents.slice(0, index + 1);
+      return {
+        value: qty,
+        count: String(index + 1).padStart(2, "0"),
+        label: agents.map((agent) => agent.name.replace(/^Agente de\s+/i, "")).join(" + "),
+        desc: agents.map((agent) => agent.description).filter(Boolean).join(" | "),
+      };
+    });
+
   return (
     <div className="space-y-6">
       <div>
@@ -36,9 +35,14 @@ export function Step2Agents({ value, onChange, error }: Props) {
         </p>
       </div>
       <div className="space-y-3">
+        {options.length === 0 && (
+          <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5 text-sm text-muted-foreground">
+            Nenhum agente ativo no CRM para exibir no formulario.
+          </div>
+        )}
         {options.map((opt) => {
           const selected = value === opt.value;
-          const price = agentsTotal(opt.value);
+          const price = agentsTotal(opt.value, catalog);
           return (
             <button
               key={opt.value}

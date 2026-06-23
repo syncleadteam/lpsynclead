@@ -1,14 +1,42 @@
 import { supabase } from "@/integrations/supabase/client";
 import type {
   FormState,
+  LandingCatalog,
   ModuleCode,
   SubmitResult,
 } from "@/types/lead";
+import { agentModulesFor } from "@/lib/pricing";
 
-function agentModulesFor(qty: NonNullable<FormState["agents_quantity"]>): ModuleCode[] {
-  if (qty === "1_agente") return ["attendance_agent"];
-  if (qty === "2_agentes") return ["attendance_agent", "sales_agent"];
-  return ["attendance_agent", "sales_agent", "support_agent"];
+export async function fetchLandingCatalog(): Promise<LandingCatalog> {
+  const { data, error } = await supabase.rpc("get_landing_infrastructure_products");
+  if (error) throw new Error(error.message);
+
+  const products = (Array.isArray(data) ? data : []) as Array<{
+    id: string;
+    code: string;
+    name: string;
+    description: string | null;
+    price: number | string;
+    category: "agent" | "module";
+    requiredAgents?: string[];
+    position?: number;
+  }>;
+
+  const normalized = products.map((product) => ({
+    id: product.id,
+    code: product.code,
+    name: product.name,
+    description: product.description,
+    price: Number(product.price),
+    category: product.category,
+    requiredAgents: product.requiredAgents ?? [],
+    position: product.position ?? 0,
+  }));
+
+  return {
+    agents: normalized.filter((product) => product.category === "agent"),
+    modules: normalized.filter((product) => product.category === "module"),
+  };
 }
 
 function selectedFeatureModules(toggles: FormState["toggles"]): ModuleCode[] {
@@ -17,11 +45,11 @@ function selectedFeatureModules(toggles: FormState["toggles"]): ModuleCode[] {
     .map(([k]) => k);
 }
 
-export async function submitLead(state: FormState): Promise<SubmitResult> {
+export async function submitLead(state: FormState, catalog: LandingCatalog): Promise<SubmitResult> {
   if (!state.agents_quantity) throw new Error("Quantidade de agentes obrigatória");
 
   const allCodes: ModuleCode[] = [
-    ...agentModulesFor(state.agents_quantity),
+    ...agentModulesFor(state.agents_quantity, catalog).map((product) => product.code),
     ...selectedFeatureModules(state.toggles),
   ];
 

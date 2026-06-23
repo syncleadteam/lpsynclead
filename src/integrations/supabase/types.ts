@@ -188,6 +188,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_landing_infrastructure_products: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       submit_landing_infrastructure_lead: {
         Args: {
           _agents_quantity: string

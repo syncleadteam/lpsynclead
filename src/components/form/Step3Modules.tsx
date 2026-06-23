@@ -1,47 +1,28 @@
 import { Check } from "lucide-react";
-import type { AgentsQuantity, FormState } from "@/types/lead";
-import { MODULE_PRICES, agentsTotal, brl } from "@/lib/pricing";
+import type { AgentsQuantity, FormState, LandingCatalog } from "@/types/lead";
+import { agentModulesFor, agentsTotal, brl } from "@/lib/pricing";
 
 type ModuleKey = keyof FormState["toggles"];
-type AgentKind = "atendimento" | "vendas" | "suporte";
-
-interface ModuleDef {
-  key: ModuleKey;
-  name: string;
-  tip: string;
-  agents: AgentKind[];
-}
-
-const MODULES: ModuleDef[] = [
-  { key: "faq_ai", name: "FAQ Inteligente", tip: "Respostas automáticas a perguntas frequentes", agents: ["atendimento", "vendas", "suporte"] },
-  { key: "whatsapp_group_notifications", name: "Resumo em Grupo WhatsApp", tip: "Síntese diária de atendimentos em grupos", agents: ["atendimento", "vendas", "suporte"] },
-  { key: "followup", name: "Follow Up", tip: "Acompanhamento automático de leads e clientes após contato", agents: ["atendimento", "vendas", "suporte"] },
-  { key: "auto_scheduling", name: "Agendamento Automático", tip: "Marcação de reuniões e serviços sem intervenção humana", agents: ["atendimento", "vendas", "suporte"] },
-  { key: "automatic_reminders", name: "Lembretes Automáticos", tip: "Notificações proativas de compromissos e prazos", agents: ["vendas", "suporte"] },
-  { key: "technical_ai", name: "Base Técnica Avançada", tip: "Documentação e respostas técnicas detalhadas", agents: ["vendas", "suporte"] },
-  { key: "media_sending", name: "Envio de Mídia", tip: "Compartilhamento de imagens, documentos e vídeos", agents: ["vendas", "suporte"] },
-  { key: "bulk_messaging", name: "Disparo em Massa", tip: "Envio de mensagens para listas segmentadas", agents: ["vendas"] },
-];
-
-const AGENTS_BY_QTY: Record<AgentsQuantity, AgentKind[]> = {
-  "1_agente": ["atendimento"],
-  "2_agentes": ["atendimento", "vendas"],
-  "3_agentes": ["atendimento", "vendas", "suporte"],
-};
 
 interface Props {
   agentsQuantity: AgentsQuantity;
+  catalog: LandingCatalog;
   toggles: FormState["toggles"];
   onToggle: (key: ModuleKey, value: boolean) => void;
 }
 
-export function Step3Modules({ agentsQuantity, toggles, onToggle }: Props) {
-  const selectedAgents = AGENTS_BY_QTY[agentsQuantity];
-  const visible = MODULES.filter((m) => m.agents.some((a) => selectedAgents.includes(a)));
+export function Step3Modules({ agentsQuantity, catalog, toggles, onToggle }: Props) {
+  const selectedAgentCodes = agentModulesFor(agentsQuantity, catalog).map((product) => product.code);
+  const visible = catalog.modules.filter(
+    (module) =>
+      module.requiredAgents.length === 0 ||
+      module.requiredAgents.some((agentCode) => selectedAgentCodes.includes(agentCode)),
+  );
   const featuresTotal = visible
-    .filter((m) => toggles[m.key])
-    .reduce((sum, m) => sum + MODULE_PRICES[m.key], 0);
-  const grandTotal = agentsTotal(agentsQuantity) + featuresTotal;
+    .filter((m) => toggles[m.code])
+    .reduce((sum, m) => sum + m.price, 0);
+  const agentTotal = agentsTotal(agentsQuantity, catalog);
+  const grandTotal = agentTotal + featuresTotal;
 
   return (
     <div className="space-y-6">
@@ -54,14 +35,19 @@ export function Step3Modules({ agentsQuantity, toggles, onToggle }: Props) {
         </p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {visible.length === 0 && (
+          <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4 text-sm text-muted-foreground sm:col-span-2">
+            Nenhum modulo ativo no CRM para os agentes selecionados.
+          </div>
+        )}
         {visible.map((m) => {
-          const active = toggles[m.key];
-          const price = MODULE_PRICES[m.key];
+          const active = toggles[m.code];
+          const price = m.price;
           return (
             <button
-              key={m.key}
+              key={m.code}
               type="button"
-              onClick={() => onToggle(m.key, !active)}
+              onClick={() => onToggle(m.code, !active)}
               className={`text-left p-4 rounded-xl border transition-all ${
                 active
                   ? "border-primary bg-primary/5 shadow-[0_0_25px_-10px_hsl(217_91%_60%/0.5)]"
@@ -78,7 +64,7 @@ export function Step3Modules({ agentsQuantity, toggles, onToggle }: Props) {
                   {active && <Check className="size-3 text-primary-foreground" strokeWidth={3} />}
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground leading-relaxed">{m.tip}</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">{m.description}</p>
               <p className={`mt-3 font-mono text-xs ${active ? "text-primary" : "text-muted-foreground"}`}>
                 {brl(price)}<span className="text-muted-foreground">/mês</span>
               </p>
@@ -90,7 +76,7 @@ export function Step3Modules({ agentsQuantity, toggles, onToggle }: Props) {
         <div>
           <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Investimento estimado</div>
           <div className="text-xs text-muted-foreground mt-0.5">
-            Agentes {brl(agentsTotal(agentsQuantity))} + Módulos {brl(featuresTotal)}
+            Agentes {brl(agentTotal)} + Módulos {brl(featuresTotal)}
           </div>
         </div>
         <div className="font-display text-2xl font-medium text-primary">

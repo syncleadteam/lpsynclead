@@ -25,6 +25,14 @@ export function LeadForm() {
     : stepperGroups.findIndex((g) => g.steps.includes(f.step));
 
   async function handleNext() {
+    if (f.catalogLoading) {
+      toast.error("Aguarde o carregamento dos produtos do CRM.");
+      return;
+    }
+    if (f.catalogError) {
+      toast.error(f.catalogError);
+      return;
+    }
     if (f.step < TOTAL_STEPS) {
       f.next();
       return;
@@ -102,6 +110,11 @@ export function LeadForm() {
         {/* Content */}
         <div className="md:col-span-8 p-8 md:p-12 bg-black/20 min-h-[520px] flex flex-col">
           <div className="flex-1">
+            {f.catalogError && !f.result ? (
+              <div className="mb-4 rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm text-primary">
+                {f.catalogError}
+              </div>
+            ) : null}
             <AnimatePresence mode="wait">
               {f.result ? (
                 <StepShell k="success">
@@ -119,6 +132,7 @@ export function LeadForm() {
                   {f.step === 2 && (
                     <Step2Agents
                       value={f.state.agents_quantity}
+                      catalog={f.catalog}
                       onChange={f.setAgents}
                       error={f.errors.agents_quantity}
                     />
@@ -126,6 +140,7 @@ export function LeadForm() {
                   {f.step === 3 && f.state.agents_quantity && (
                     <Step3Modules
                       agentsQuantity={f.state.agents_quantity}
+                      catalog={f.catalog}
                       toggles={f.state.toggles}
                       onToggle={f.setToggle}
                     />
@@ -155,10 +170,15 @@ export function LeadForm() {
               <button
                 type="button"
                 onClick={handleNext}
-                disabled={f.submitting}
+                disabled={f.submitting || f.catalogLoading}
                 className="flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-medium rounded-xl hover:brightness-110 transition-all shadow-[0_0_20px_-5px_hsl(217_91%_60%/0.5)] disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {f.submitting ? (
+                {f.catalogLoading ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin" />
+                    Carregando...
+                  </>
+                ) : f.submitting ? (
                   <>
                     <Loader2 className="size-4 animate-spin" />
                     Enviando...

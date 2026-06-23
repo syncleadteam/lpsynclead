@@ -18,31 +18,28 @@ export type ClientData = z.infer<typeof clientSchema>;
 export type AgentsQuantity = "1_agente" | "2_agentes" | "3_agentes";
 
 export type ModuleCode =
-  | "attendance_agent"
-  | "sales_agent"
-  | "support_agent"
-  | "faq_ai"
-  | "technical_ai"
-  | "auto_scheduling"
-  | "automatic_reminders"
-  | "whatsapp_group_notifications"
-  | "media_sending"
-  | "bulk_messaging"
-  | "followup";
+  | string;
+
+export interface LandingProduct {
+  id: string;
+  code: ModuleCode;
+  name: string;
+  description: string | null;
+  price: number;
+  category: "agent" | "module";
+  requiredAgents: string[];
+  position: number;
+}
+
+export interface LandingCatalog {
+  agents: LandingProduct[];
+  modules: LandingProduct[];
+}
 
 export interface FormState {
   client: ClientData;
   agents_quantity: AgentsQuantity | null;
-  toggles: {
-    faq_ai: boolean;
-    technical_ai: boolean;
-    auto_scheduling: boolean;
-    automatic_reminders: boolean;
-    whatsapp_group_notifications: boolean;
-    media_sending: boolean;
-    bulk_messaging: boolean;
-    followup: boolean;
-  };
+  toggles: Record<string, boolean>;
   observations: string;
 }
 
@@ -65,15 +62,6 @@ export const initialFormState: FormState = {
     business_sector: "",
   },
   agents_quantity: null,
-  toggles: {
-    faq_ai: false,
-    technical_ai: false,
-    auto_scheduling: false,
-    automatic_reminders: false,
-    whatsapp_group_notifications: false,
-    media_sending: false,
-    bulk_messaging: false,
-    followup: false,
-  },
+  toggles: {},
   observations: "",
 };

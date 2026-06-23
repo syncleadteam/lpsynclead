@@ -1,6 +1,12 @@
-import { useCallback, useMemo, useState } from "react";
-import { clientSchema, initialFormState, type FormState, type SubmitResult } from "@/types/lead";
-import { submitLead } from "@/services/leadService";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  clientSchema,
+  initialFormState,
+  type FormState,
+  type LandingCatalog,
+  type SubmitResult,
+} from "@/types/lead";
+import { fetchLandingCatalog, submitLead } from "@/services/leadService";
 
 export const TOTAL_STEPS = 4;
 
@@ -10,6 +16,33 @@ export function useLeadForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<SubmitResult | null>(null);
+  const [catalog, setCatalog] = useState<LandingCatalog>({ agents: [], modules: [] });
+  const [catalogLoading, setCatalogLoading] = useState(true);
+  const [catalogError, setCatalogError] = useState<string | null>(null);
+
+  const loadCatalog = useCallback(async () => {
+    setCatalogLoading(true);
+    setCatalogError(null);
+    try {
+      const nextCatalog = await fetchLandingCatalog();
+      setCatalog(nextCatalog);
+      setState((current) => {
+        const allowedCodes = new Set(nextCatalog.modules.map((product) => product.code));
+        const toggles = Object.fromEntries(
+          Object.entries(current.toggles).filter(([code]) => allowedCodes.has(code)),
+        );
+        return { ...current, toggles };
+      });
+    } catch (error) {
+      setCatalogError(error instanceof Error ? error.message : "Nao foi possivel carregar produtos.");
+    } finally {
+      setCatalogLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadCatalog();
+  }, [loadCatalog]);
 
   const updateClient = useCallback(
     (patch: Partial<FormState["client"]>) =>
@@ -50,8 +83,21 @@ export function useLeadForm() {
       setErrors({ agents_quantity: "Selecione uma opção" });
       return false;
     }
+    if (step === 2 && catalog.agents.length === 0) {
+      setErrors({ agents_quantity: "Nenhum agente ativo no CRM" });
+      return false;
+    }
+    if (
+      step === 2 &&
+      state.agents_quantity &&
+      ((state.agents_quantity === "2_agentes" && catalog.agents.length < 2) ||
+        (state.agents_quantity === "3_agentes" && catalog.agents.length < 3))
+    ) {
+      setErrors({ agents_quantity: "Esta quantidade nao esta ativa no CRM" });
+      return false;
+    }
     return true;
-  }, [step, state]);
+  }, [step, state, catalog.agents.length]);
 
   const next = useCallback(() => {
     if (!validateStep()) return;
@@ -64,13 +110,13 @@ export function useLeadForm() {
     if (submitting) return;
     setSubmitting(true);
     try {
-      const res = await submitLead(state);
+      const res = await submitLead(state, catalog);
       setResult(res);
       return res;
     } finally {
       setSubmitting(false);
     }
-  }, [state, submitting]);
+  }, [state, catalog, submitting]);
 
   const progress = useMemo(() => Math.round((step / TOTAL_STEPS) * 100), [step]);
 
@@ -80,7 +126,11 @@ export function useLeadForm() {
     errors,
     submitting,
     result,
+    catalog,
+    catalogLoading,
+    catalogError,
     progress,
+    loadCatalog,
     updateClient,
     setAgents,
     setToggle,
