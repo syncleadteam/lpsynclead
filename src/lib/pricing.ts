@@ -19,6 +19,9 @@ const includedModuleCodesByAgent: Record<string, string[]> = {
     "automatic_reminders",
     "media_sending",
     "bulk_messaging",
+    "commitment_log",
+    "calendar_lookup",
+    "number_blocking",
   ],
 };
 

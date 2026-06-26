@@ -45,39 +45,55 @@ export function LeadForm() {
       id="formulario"
       className="bg-zinc-900/50 border border-white/5 rounded-3xl p-1 overflow-hidden shadow-2xl"
     >
-      <div className="grid grid-cols-1 md:grid-cols-12">
-        {/* Sidebar */}
-        <aside className="md:col-span-4 p-8 md:p-10 bg-zinc-900/80 border-b md:border-b-0 md:border-r border-white/5">
-          <div className="space-y-8">
-            <div>
-              <div className="size-10 rounded-xl bg-primary/20 flex items-center justify-center mb-6">
-                <div className="size-2 rounded-full bg-primary animate-pulse" />
+      <div className="flex flex-col">
+        <header className="bg-zinc-900/80 border-b border-white/5 p-6 md:p-8">
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+              <div>
+                <div className="mb-4 flex size-10 items-center justify-center rounded-xl bg-primary/20">
+                  <div className="size-2 animate-pulse rounded-full bg-primary" />
+                </div>
+                <h2 className="font-display text-2xl font-medium text-foreground">Configurador</h2>
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                  Personalize sua infraestrutura de atendimento sob medida.
+                </p>
               </div>
-              <h2 className="font-display text-2xl font-medium mb-2 text-foreground">
-                Configurador
-              </h2>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Personalize sua infraestrutura de atendimento sob medida.
-              </p>
+
+              {!f.result && (
+                <div className="w-full shrink-0 md:w-52">
+                  <div className="mb-2 flex justify-between text-[10px] uppercase tracking-widest text-muted-foreground">
+                    <span>
+                      Etapa {f.step}/{TOTAL_STEPS}
+                    </span>
+                    <span>{f.progress}%</span>
+                  </div>
+                  <div className="h-1 overflow-hidden rounded-full bg-white/5">
+                    <div
+                      className="h-full bg-primary transition-all duration-500"
+                      style={{ width: `${f.progress}%` }}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
 
-            <div className="space-y-4">
+            <nav className="grid grid-cols-2 gap-2 md:grid-cols-4">
               {stepperGroups.map((g, i) => {
                 const isActive = i === activeGroup;
                 const isDone = i < activeGroup;
                 return (
                   <div
                     key={g.label}
-                    className={`flex items-center gap-4 transition-colors ${
+                    className={`flex items-center gap-3 rounded-xl border px-3 py-3 transition-colors ${
                       isActive
-                        ? "text-primary"
+                        ? "border-primary bg-primary/10 text-primary"
                         : isDone
-                          ? "text-foreground"
-                          : "text-muted-foreground"
+                          ? "border-white/15 bg-white/[0.04] text-foreground"
+                          : "border-white/10 bg-white/[0.02] text-muted-foreground"
                     }`}
                   >
                     <span
-                      className={`size-6 rounded-full border flex items-center justify-center text-[10px] font-bold ${
+                      className={`flex size-6 items-center justify-center rounded-full border text-[10px] font-bold ${
                         isActive
                           ? "border-primary bg-primary/10"
                           : isDone
@@ -87,33 +103,15 @@ export function LeadForm() {
                     >
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <span className="text-sm font-medium">{g.label}</span>
+                    <span className="min-w-0 text-sm font-medium">{g.label}</span>
                   </div>
                 );
               })}
-            </div>
-
-            {!f.result && (
-              <div className="pt-6 border-t border-white/5">
-                <div className="flex justify-between text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
-                  <span>
-                    Etapa {f.step}/{TOTAL_STEPS}
-                  </span>
-                  <span>{f.progress}%</span>
-                </div>
-                <div className="h-1 bg-white/5 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-primary transition-all duration-500"
-                    style={{ width: `${f.progress}%` }}
-                  />
-                </div>
-              </div>
-            )}
+            </nav>
           </div>
-        </aside>
+        </header>
 
-        {/* Content */}
-        <div className="md:col-span-8 p-8 md:p-12 bg-black/20 min-h-[520px] flex flex-col">
+        <div className="min-h-[520px] bg-black/20 p-6 md:p-10">
           <div className="flex-1">
             {f.catalogError && !f.result ? (
               <div className="mb-4 rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm text-primary">
@@ -151,7 +149,7 @@ export function LeadForm() {
           </div>
 
           {!f.result && (
-            <div className="flex items-center justify-between pt-8 mt-8 border-t border-white/10">
+            <div className="mt-8 flex items-center justify-between border-t border-white/10 pt-8">
               <button
                 type="button"
                 onClick={f.back}

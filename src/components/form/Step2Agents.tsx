@@ -55,65 +55,68 @@ export function Step2Agents({ selectedAgentCodes, catalog, onToggle, error }: Pr
                   : "border-white/10 bg-white/[0.02] hover:border-white/20"
               }`}
             >
-              <span className="flex items-start gap-5">
-                <span
-                  className={`font-display text-3xl font-light tabular-nums ${
-                    isSelected ? "text-primary" : "text-muted-foreground"
-                  }`}
-                >
-                  {String(index + 1).padStart(2, "0")}
+              <span className="flex flex-col gap-4">
+                <span className="flex items-start justify-between gap-4">
+                  <span
+                    className={`font-display text-3xl font-light tabular-nums ${
+                      isSelected ? "text-primary" : "text-muted-foreground"
+                    }`}
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span
+                    className={`flex size-5 shrink-0 items-center justify-center rounded-full ${
+                      isSelected ? "bg-primary" : "border border-white/20"
+                    }`}
+                  >
+                    {isSelected && (
+                      <Check className="size-3 text-primary-foreground" strokeWidth={3} />
+                    )}
+                  </span>
                 </span>
-                <span className="min-w-0 flex-1">
-                  <span className="flex items-start justify-between gap-3">
-                    <span>
-                      <span className="block font-medium text-foreground">{agent.name}</span>
-                      {agent.description ? (
-                        <span className="mt-0.5 block text-xs text-muted-foreground">
-                          {agent.description}
-                        </span>
-                      ) : null}
+
+                <span>
+                  <span className="block font-medium text-foreground">{agent.name}</span>
+                  {agent.description ? (
+                    <span className="mt-1 block text-xs text-muted-foreground">
+                      {agent.description}
                     </span>
-                    <span
-                      className={`size-5 rounded-full flex items-center justify-center shrink-0 ${
-                        isSelected ? "bg-primary" : "border border-white/20"
-                      }`}
-                    >
-                      {isSelected && (
-                        <Check className="size-3 text-primary-foreground" strokeWidth={3} />
-                      )}
-                    </span>
+                  ) : null}
+                </span>
+
+                <span>
+                  <span className="text-[10px] font-medium uppercase tracking-widest text-muted-foreground">
+                    Módulos inclusos
                   </span>
-                  <span className="mt-4 block">
-                    <span className="text-[10px] font-medium uppercase tracking-widest text-muted-foreground">
-                      Módulos inclusos
-                    </span>
-                    <span className="mt-2 flex flex-wrap gap-2">
-                      {includedModules.length === 0 ? (
-                        <span className="rounded-md border border-white/10 px-2 py-1 text-xs text-muted-foreground">
-                          Módulos em definição
+                  <span className="mt-2 flex flex-col gap-2">
+                    {includedModules.length === 0 ? (
+                      <span className="rounded-md border border-white/10 px-2 py-1 text-xs text-muted-foreground">
+                        Módulos em definição
+                      </span>
+                    ) : (
+                      includedModules.map((module) => (
+                        <span
+                          key={module.code}
+                          className="rounded-md border border-white/10 bg-white/[0.03] px-2 py-1 text-xs text-muted-foreground"
+                        >
+                          {module.name}
                         </span>
-                      ) : (
-                        includedModules.map((module) => (
-                          <span
-                            key={module.code}
-                            className="rounded-md border border-white/10 bg-white/[0.03] px-2 py-1 text-xs text-muted-foreground"
-                          >
-                            {module.name}
-                          </span>
-                        ))
-                      )}
-                    </span>
+                      ))
+                    )}
                   </span>
-                  <span className="mt-4 flex items-center justify-between gap-3">
-                    <span className="text-xs text-muted-foreground">Agente + módulos inclusos</span>
-                    <span
-                      className={`font-mono text-sm ${
-                        isSelected ? "text-primary" : "text-foreground"
-                      }`}
-                    >
-                      {brl(price)}
-                      <span className="text-muted-foreground">/mês</span>
-                    </span>
+                </span>
+
+                <span className="border-t border-white/10 pt-4">
+                  <span className="block text-xs text-muted-foreground">
+                    Agente + módulos inclusos
+                  </span>
+                  <span
+                    className={`mt-1 block font-mono text-sm ${
+                      isSelected ? "text-primary" : "text-foreground"
+                    }`}
+                  >
+                    {brl(price)}
+                    <span className="text-muted-foreground">/mês</span>
                   </span>
                 </span>
               </span>
