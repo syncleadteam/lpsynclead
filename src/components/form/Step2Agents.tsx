@@ -32,9 +32,9 @@ export function Step2Agents({ selectedAgentCodes, catalog, onToggle, error }: Pr
           Selecione os especialistas. Os módulos inclusos em cada agente já entram automaticamente.
         </p>
       </div>
-      <div className="space-y-3">
+      <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
         {catalog.agents.length === 0 && (
-          <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5 text-sm text-muted-foreground">
+          <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5 text-sm text-muted-foreground lg:col-span-3">
             Nenhum agente ativo no CRM para exibir no formulario.
           </div>
         )}
@@ -97,9 +97,12 @@ export function Step2Agents({ selectedAgentCodes, catalog, onToggle, error }: Pr
                       includedModules.map((module) => (
                         <span
                           key={module.code}
-                          className="rounded-md border border-white/10 bg-white/[0.03] px-2 py-1 text-xs text-muted-foreground"
+                          className="rounded-md border border-white/10 bg-white/[0.03] px-3 py-2 text-xs text-muted-foreground"
                         >
-                          {module.name}
+                          <span className="block font-medium text-foreground">{module.name}</span>
+                          {module.description ? (
+                            <span className="mt-1 block leading-relaxed">{module.description}</span>
+                          ) : null}
                         </span>
                       ))
                     )}
