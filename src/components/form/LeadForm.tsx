@@ -5,24 +5,20 @@ import { useLeadForm, TOTAL_STEPS } from "@/hooks/useLeadForm";
 import { StepShell } from "./StepShell";
 import { Step1Client } from "./Step1Client";
 import { Step2Agents } from "./Step2Agents";
-import { Step3Modules } from "./Step3Modules";
 import { Step4Observations } from "./Step4Observations";
 import { SuccessScreen } from "./SuccessScreen";
 
 const stepperGroups = [
   { label: "Perfil", steps: [1] },
   { label: "Agentes", steps: [2] },
-  { label: "Módulos", steps: [3] },
-  { label: "Observações", steps: [4] },
+  { label: "Observações", steps: [3] },
   { label: "Enviar", steps: [] as number[] },
 ];
 
 export function LeadForm() {
   const f = useLeadForm();
 
-  const activeGroup = f.result
-    ? 4
-    : stepperGroups.findIndex((g) => g.steps.includes(f.step));
+  const activeGroup = f.result ? 4 : stepperGroups.findIndex((g) => g.steps.includes(f.step));
 
   async function handleNext() {
     if (f.catalogLoading) {
@@ -45,7 +41,10 @@ export function LeadForm() {
   }
 
   return (
-    <div id="formulario" className="bg-zinc-900/50 border border-white/5 rounded-3xl p-1 overflow-hidden shadow-2xl">
+    <div
+      id="formulario"
+      className="bg-zinc-900/50 border border-white/5 rounded-3xl p-1 overflow-hidden shadow-2xl"
+    >
       <div className="grid grid-cols-1 md:grid-cols-12">
         {/* Sidebar */}
         <aside className="md:col-span-4 p-8 md:p-10 bg-zinc-900/80 border-b md:border-b-0 md:border-r border-white/5">
@@ -70,7 +69,11 @@ export function LeadForm() {
                   <div
                     key={g.label}
                     className={`flex items-center gap-4 transition-colors ${
-                      isActive ? "text-primary" : isDone ? "text-foreground" : "text-muted-foreground"
+                      isActive
+                        ? "text-primary"
+                        : isDone
+                          ? "text-foreground"
+                          : "text-muted-foreground"
                     }`}
                   >
                     <span
@@ -93,7 +96,9 @@ export function LeadForm() {
             {!f.result && (
               <div className="pt-6 border-t border-white/5">
                 <div className="flex justify-between text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
-                  <span>Etapa {f.step}/{TOTAL_STEPS}</span>
+                  <span>
+                    Etapa {f.step}/{TOTAL_STEPS}
+                  </span>
                   <span>{f.progress}%</span>
                 </div>
                 <div className="h-1 bg-white/5 rounded-full overflow-hidden">
@@ -131,25 +136,14 @@ export function LeadForm() {
                   )}
                   {f.step === 2 && (
                     <Step2Agents
-                      value={f.state.agents_quantity}
+                      selectedAgentCodes={f.state.selected_agent_codes}
                       catalog={f.catalog}
-                      onChange={f.setAgents}
+                      onToggle={f.setAgentSelected}
                       error={f.errors.agents_quantity}
                     />
                   )}
-                  {f.step === 3 && f.state.agents_quantity && (
-                    <Step3Modules
-                      agentsQuantity={f.state.agents_quantity}
-                      catalog={f.catalog}
-                      toggles={f.state.toggles}
-                      onToggle={f.setToggle}
-                    />
-                  )}
-                  {f.step === 4 && (
-                    <Step4Observations
-                      value={f.state.observations}
-                      onChange={f.setObservations}
-                    />
+                  {f.step === 3 && (
+                    <Step4Observations value={f.state.observations} onChange={f.setObservations} />
                   )}
                 </StepShell>
               )}

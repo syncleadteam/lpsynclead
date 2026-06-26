@@ -1,11 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
-import type {
-  FormState,
-  LandingCatalog,
-  ModuleCode,
-  SubmitResult,
-} from "@/types/lead";
-import { agentModulesFor } from "@/lib/pricing";
+import type { FormState, LandingCatalog, ModuleCode, SubmitResult } from "@/types/lead";
+import { includedModulesForAgents, quantityForAgentCount, selectedAgentsFor } from "@/lib/pricing";
 
 export async function fetchLandingCatalog(): Promise<LandingCatalog> {
   const { data, error } = await supabase.rpc("get_landing_infrastructure_products");
@@ -39,23 +34,20 @@ export async function fetchLandingCatalog(): Promise<LandingCatalog> {
   };
 }
 
-function selectedFeatureModules(toggles: FormState["toggles"]): ModuleCode[] {
-  return (Object.entries(toggles) as [ModuleCode, boolean][])
-    .filter(([, v]) => v)
-    .map(([k]) => k);
-}
-
 export async function submitLead(state: FormState, catalog: LandingCatalog): Promise<SubmitResult> {
-  if (!state.agents_quantity) throw new Error("Quantidade de agentes obrigatória");
+  const selectedAgents = selectedAgentsFor(state.selected_agent_codes, catalog);
+  const agentsQuantity = quantityForAgentCount(selectedAgents.length);
+
+  if (!agentsQuantity) throw new Error("Selecione de 1 a 3 agentes");
 
   const allCodes: ModuleCode[] = [
-    ...agentModulesFor(state.agents_quantity, catalog).map((product) => product.code),
-    ...selectedFeatureModules(state.toggles),
+    ...selectedAgents.map((product) => product.code),
+    ...includedModulesForAgents(state.selected_agent_codes, catalog).map((product) => product.code),
   ];
 
   const { data, error } = await supabase.rpc("submit_landing_infrastructure_lead", {
     _client: state.client,
-    _agents_quantity: state.agents_quantity,
+    _agents_quantity: agentsQuantity,
     _module_codes: allCodes,
     _observations: state.observations ?? "",
   });

@@ -17,8 +17,7 @@ export type ClientData = z.infer<typeof clientSchema>;
 
 export type AgentsQuantity = "1_agente" | "2_agentes" | "3_agentes";
 
-export type ModuleCode =
-  | string;
+export type ModuleCode = string;
 
 export interface LandingProduct {
   id: string;
@@ -39,7 +38,7 @@ export interface LandingCatalog {
 export interface FormState {
   client: ClientData;
   agents_quantity: AgentsQuantity | null;
-  toggles: Record<string, boolean>;
+  selected_agent_codes: ModuleCode[];
   observations: string;
 }
 
@@ -62,6 +61,6 @@ export const initialFormState: FormState = {
     business_sector: "",
   },
   agents_quantity: null,
-  toggles: {},
+  selected_agent_codes: [],
   observations: "",
 };

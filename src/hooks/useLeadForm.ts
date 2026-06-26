@@ -6,9 +6,10 @@ import {
   type LandingCatalog,
   type SubmitResult,
 } from "@/types/lead";
+import { quantityForAgentCount } from "@/lib/pricing";
 import { fetchLandingCatalog, submitLead } from "@/services/leadService";
 
-export const TOTAL_STEPS = 4;
+export const TOTAL_STEPS = 3;
 
 export function useLeadForm() {
   const [step, setStep] = useState(1);
@@ -27,14 +28,20 @@ export function useLeadForm() {
       const nextCatalog = await fetchLandingCatalog();
       setCatalog(nextCatalog);
       setState((current) => {
-        const allowedCodes = new Set(nextCatalog.modules.map((product) => product.code));
-        const toggles = Object.fromEntries(
-          Object.entries(current.toggles).filter(([code]) => allowedCodes.has(code)),
+        const allowedCodes = new Set(nextCatalog.agents.map((product) => product.code));
+        const selectedAgentCodes = current.selected_agent_codes.filter((code) =>
+          allowedCodes.has(code),
         );
-        return { ...current, toggles };
+        return {
+          ...current,
+          selected_agent_codes: selectedAgentCodes,
+          agents_quantity: quantityForAgentCount(selectedAgentCodes.length),
+        };
       });
     } catch (error) {
-      setCatalogError(error instanceof Error ? error.message : "Nao foi possivel carregar produtos.");
+      setCatalogError(
+        error instanceof Error ? error.message : "Nao foi possivel carregar produtos.",
+      );
     } finally {
       setCatalogLoading(false);
     }
@@ -50,14 +57,21 @@ export function useLeadForm() {
     [],
   );
 
-  const setAgents = useCallback(
-    (q: FormState["agents_quantity"]) => setState((s) => ({ ...s, agents_quantity: q })),
-    [],
-  );
+  const setAgentSelected = useCallback(
+    (agentCode: string, selected: boolean) =>
+      setState((s) => {
+        const selectedAgentCodes = selected
+          ? [...s.selected_agent_codes, agentCode]
+          : s.selected_agent_codes.filter((code) => code !== agentCode);
 
-  const setToggle = useCallback(
-    (key: keyof FormState["toggles"], value: boolean) =>
-      setState((s) => ({ ...s, toggles: { ...s.toggles, [key]: value } })),
+        const uniqueAgentCodes = [...new Set(selectedAgentCodes)];
+
+        return {
+          ...s,
+          selected_agent_codes: uniqueAgentCodes,
+          agents_quantity: quantityForAgentCount(uniqueAgentCodes.length),
+        };
+      }),
     [],
   );
 
@@ -79,25 +93,26 @@ export function useLeadForm() {
         return false;
       }
     }
-    if (step === 2 && !state.agents_quantity) {
-      setErrors({ agents_quantity: "Selecione uma opção" });
+    if (step === 2 && state.selected_agent_codes.length === 0) {
+      setErrors({ agents_quantity: "Selecione pelo menos um agente" });
       return false;
     }
     if (step === 2 && catalog.agents.length === 0) {
       setErrors({ agents_quantity: "Nenhum agente ativo no CRM" });
       return false;
     }
-    if (
-      step === 2 &&
-      state.agents_quantity &&
-      ((state.agents_quantity === "2_agentes" && catalog.agents.length < 2) ||
-        (state.agents_quantity === "3_agentes" && catalog.agents.length < 3))
-    ) {
-      setErrors({ agents_quantity: "Esta quantidade nao esta ativa no CRM" });
+    if (step === 2 && state.selected_agent_codes.length > 0 && !state.agents_quantity) {
+      setErrors({ agents_quantity: "Selecione no maximo 3 agentes" });
       return false;
     }
     return true;
-  }, [step, state, catalog.agents.length]);
+  }, [
+    step,
+    state.selected_agent_codes.length,
+    state.agents_quantity,
+    state.client,
+    catalog.agents.length,
+  ]);
 
   const next = useCallback(() => {
     if (!validateStep()) return;
@@ -132,8 +147,7 @@ export function useLeadForm() {
     progress,
     loadCatalog,
     updateClient,
-    setAgents,
-    setToggle,
+    setAgentSelected,
     setObservations,
     next,
     back,

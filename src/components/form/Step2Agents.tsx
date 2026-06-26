@@ -1,88 +1,146 @@
 import { Check } from "lucide-react";
-import type { AgentsQuantity, LandingCatalog } from "@/types/lead";
-import { agentsTotal, brl } from "@/lib/pricing";
+import type { LandingCatalog } from "@/types/lead";
+import {
+  brl,
+  includedModulesForAgent,
+  includedModulesForAgents,
+  includedModulesTotal,
+  selectedAgentsTotal,
+} from "@/lib/pricing";
 
 interface Props {
-  value: AgentsQuantity | null;
+  selectedAgentCodes: string[];
   catalog: LandingCatalog;
-  onChange: (v: AgentsQuantity) => void;
+  onToggle: (agentCode: string, selected: boolean) => void;
   error?: string;
 }
 
-const quantities: AgentsQuantity[] = ["1_agente", "2_agentes", "3_agentes"];
-
-export function Step2Agents({ value, catalog, onChange, error }: Props) {
-  const options = quantities
-    .filter((qty, index) => catalog.agents.length >= index + 1)
-    .map((qty, index) => {
-      const agents = catalog.agents.slice(0, index + 1);
-      return {
-        value: qty,
-        count: String(index + 1).padStart(2, "0"),
-        label: agents.map((agent) => agent.name.replace(/^Agente de\s+/i, "")).join(" + "),
-        desc: agents.map((agent) => agent.description).filter(Boolean).join(" | "),
-      };
-    });
+export function Step2Agents({ selectedAgentCodes, catalog, onToggle, error }: Props) {
+  const selected = new Set(selectedAgentCodes);
+  const agentTotal = selectedAgentsTotal(selectedAgentCodes, catalog);
+  const modules = includedModulesForAgents(selectedAgentCodes, catalog);
+  const modulesTotal = includedModulesTotal(selectedAgentCodes, catalog);
+  const grandTotal = agentTotal + modulesTotal;
 
   return (
     <div className="space-y-6">
       <div>
         <h3 className="font-display text-2xl md:text-3xl font-light text-foreground mb-2">
-          Quantos agentes no coração da sua automação?
+          Quais agentes sua operação precisa?
         </h3>
         <p className="text-sm text-muted-foreground">
-          Cada agente é um especialista treinado para uma função.
+          Selecione os especialistas. Os módulos inclusos em cada agente já entram automaticamente.
         </p>
       </div>
       <div className="space-y-3">
-        {options.length === 0 && (
+        {catalog.agents.length === 0 && (
           <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5 text-sm text-muted-foreground">
             Nenhum agente ativo no CRM para exibir no formulario.
           </div>
         )}
-        {options.map((opt) => {
-          const selected = value === opt.value;
-          const price = agentsTotal(opt.value, catalog);
+        {catalog.agents.map((agent, index) => {
+          const isSelected = selected.has(agent.code);
+          const includedModules = includedModulesForAgent(agent.code, catalog);
+          const includedTotal = includedModules.reduce((sum, module) => sum + module.price, 0);
+          const price = agent.price + includedTotal;
+
           return (
             <button
-              key={opt.value}
+              key={agent.code}
               type="button"
-              onClick={() => onChange(opt.value)}
-              className={`w-full p-5 rounded-xl border text-left transition-all flex items-center gap-5 ${
-                selected
+              onClick={() => onToggle(agent.code, !isSelected)}
+              className={`w-full rounded-xl border p-5 text-left transition-all ${
+                isSelected
                   ? "border-primary bg-primary/5 shadow-[0_0_30px_-10px_hsl(217_91%_60%/0.5)]"
                   : "border-white/10 bg-white/[0.02] hover:border-white/20"
               }`}
             >
-              <span
-                className={`font-display text-3xl font-light tabular-nums ${
-                  selected ? "text-primary" : "text-muted-foreground"
-                }`}
-              >
-                {opt.count}
-              </span>
-              <span className="flex-1 min-w-0">
-                <span className="block font-medium text-foreground">{opt.label}</span>
-                <span className="block text-xs text-muted-foreground mt-0.5">{opt.desc}</span>
-              </span>
-              <span className="hidden sm:flex flex-col items-end shrink-0">
-                <span className={`font-mono text-sm ${selected ? "text-primary" : "text-foreground"}`}>
-                  {brl(price)}
+              <span className="flex items-start gap-5">
+                <span
+                  className={`font-display text-3xl font-light tabular-nums ${
+                    isSelected ? "text-primary" : "text-muted-foreground"
+                  }`}
+                >
+                  {String(index + 1).padStart(2, "0")}
                 </span>
-                <span className="text-[10px] uppercase tracking-widest text-muted-foreground">/mês</span>
-              </span>
-              <span
-                className={`size-5 rounded-full flex items-center justify-center shrink-0 ${
-                  selected ? "bg-primary" : "border border-white/20"
-                }`}
-              >
-                {selected && <Check className="size-3 text-primary-foreground" strokeWidth={3} />}
+                <span className="min-w-0 flex-1">
+                  <span className="flex items-start justify-between gap-3">
+                    <span>
+                      <span className="block font-medium text-foreground">{agent.name}</span>
+                      {agent.description ? (
+                        <span className="mt-0.5 block text-xs text-muted-foreground">
+                          {agent.description}
+                        </span>
+                      ) : null}
+                    </span>
+                    <span
+                      className={`size-5 rounded-full flex items-center justify-center shrink-0 ${
+                        isSelected ? "bg-primary" : "border border-white/20"
+                      }`}
+                    >
+                      {isSelected && (
+                        <Check className="size-3 text-primary-foreground" strokeWidth={3} />
+                      )}
+                    </span>
+                  </span>
+                  <span className="mt-4 block">
+                    <span className="text-[10px] font-medium uppercase tracking-widest text-muted-foreground">
+                      Módulos inclusos
+                    </span>
+                    <span className="mt-2 flex flex-wrap gap-2">
+                      {includedModules.length === 0 ? (
+                        <span className="rounded-md border border-white/10 px-2 py-1 text-xs text-muted-foreground">
+                          Módulos em definição
+                        </span>
+                      ) : (
+                        includedModules.map((module) => (
+                          <span
+                            key={module.code}
+                            className="rounded-md border border-white/10 bg-white/[0.03] px-2 py-1 text-xs text-muted-foreground"
+                          >
+                            {module.name}
+                          </span>
+                        ))
+                      )}
+                    </span>
+                  </span>
+                  <span className="mt-4 flex items-center justify-between gap-3">
+                    <span className="text-xs text-muted-foreground">Agente + módulos inclusos</span>
+                    <span
+                      className={`font-mono text-sm ${
+                        isSelected ? "text-primary" : "text-foreground"
+                      }`}
+                    >
+                      {brl(price)}
+                      <span className="text-muted-foreground">/mês</span>
+                    </span>
+                  </span>
+                </span>
               </span>
             </button>
           );
         })}
       </div>
       {error && <p className="text-xs text-primary">{error}</p>}
+      <div className="flex items-center justify-between rounded-xl border border-primary/30 bg-primary/5 p-4">
+        <div>
+          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
+            Investimento estimado
+          </div>
+          <div className="mt-0.5 text-xs text-muted-foreground">
+            Agentes {brl(agentTotal)} + módulos inclusos {brl(modulesTotal)}
+          </div>
+          {modules.length > 0 ? (
+            <div className="mt-1 text-xs text-muted-foreground">
+              {modules.length} módulos inclusos na configuração
+            </div>
+          ) : null}
+        </div>
+        <div className="font-display text-2xl font-medium text-primary">
+          {brl(grandTotal)}
+          <span className="text-xs font-normal text-muted-foreground">/mês</span>
+        </div>
+      </div>
     </div>
   );
 }
