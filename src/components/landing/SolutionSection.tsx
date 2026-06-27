@@ -4,17 +4,17 @@ const items = [
   {
     icon: Filter,
     title: "Triagem Inteligente",
-    desc: "O agente qualifica em segundos quem é curioso e quem é comprador real, encaminhando só leads quentes pro time.",
+    desc: "O agente qualifica em segundos quem é curioso e quem é comprador real, encaminhando apenas leads quentes para o time.",
   },
   {
     icon: Clock3,
     title: "Disponibilidade 24/7",
-    desc: "Atendimento instantâneo de domingo a domingo. Sem feriado, sem pausa pro café, sem fila.",
+    desc: "Atendimento instantâneo de domingo a domingo. Sem feriado, sem pausa para o café e sem fila.",
   },
   {
     icon: Plug,
     title: "Integração Total",
-    desc: "Conecta com WhatsApp, Instagram, Google Sheets, RD Station e o que mais você já usa no dia a dia.",
+    desc: "Conecta com WhatsApp, Instagram, Google Sheets, RD Station e outras ferramentas que você já usa no dia a dia.",
   },
 ];
 

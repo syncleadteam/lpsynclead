@@ -14,7 +14,7 @@ const pains = [
   {
     icon: UserX,
     title: "Follow-up que ninguém faz",
-    desc: "Sua equipe esquece, prioriza errado, perde contexto. O lead some e ninguém percebe.",
+    desc: "Sua equipe esquece, prioriza errado e perde contexto. O lead some, e ninguém percebe.",
   },
 ];
 
@@ -31,7 +31,7 @@ export function PainSection() {
             className="italic font-normal bg-clip-text text-transparent"
             style={{ backgroundImage: "var(--gradient-primary)" }}
           >
-            esfriando no seu direct
+            esfriando no seu atendimento
           </span>
           .
         </h2>

@@ -7,8 +7,8 @@ import {
 
 const faqs = [
   {
-    q: "O atendimento não fica muito robotizado?",
-    a: "Não. Treinamos a IA com seu tom de voz, vocabulário, FAQs e processos. O cliente sente que está conversando com alguém da sua equipe — mas com paciência infinita e disponibilidade 24/7.",
+    q: "O atendimento não fica muito robótico?",
+    a: "Não. Treinamos a IA com seu tom de voz, vocabulário, perguntas frequentes e processos. O cliente sente que está conversando com alguém da sua equipe, mas com disponibilidade 24 horas por dia, 7 dias por semana.",
   },
   {
     q: "Funciona para o meu nicho?",
@@ -16,11 +16,11 @@ const faqs = [
   },
   {
     q: "É difícil de configurar?",
-    a: "Não. Você responde 9 perguntas neste formulário, a gente conecta seu WhatsApp/CRM e treina a IA com seu material. Em poucos dias está no ar — sem você precisar mexer em código.",
+    a: "Não. Você preenche este formulário, a gente conecta seu WhatsApp/CRM e treina a IA com seu material. Em poucos dias, tudo está no ar — sem você precisar mexer em código.",
   },
   {
     q: "E se a IA não souber responder algo?",
-    a: "Ela transfere a conversa para um humano automaticamente, com todo o contexto da conversa já resumido. Nada se perde, nada fica solto.",
+    a: "Ela transfere a conversa para um humano automaticamente, com todo o contexto já resumido. Nada se perde, nada fica solto.",
   },
   {
     q: "Meus dados ficam seguros?",

@@ -2,12 +2,12 @@ const steps = [
   {
     n: "01",
     title: "Configure",
-    desc: "Responda 9 perguntas rápidas e nossa engine monta sua arquitetura ideal de agentes.",
+    desc: "Informe os dados essenciais, e nosso sistema monta a arquitetura ideal de agentes.",
   },
   {
     n: "02",
     title: "Treinamos a IA",
-    desc: "Indexamos seu conhecimento, FAQs e processos para respostas precisas com a sua voz.",
+    desc: "Indexamos seu conhecimento, suas perguntas frequentes e seus processos para respostas precisas com a sua voz.",
   },
   {
     n: "03",
@@ -24,7 +24,7 @@ export function HowItWorks() {
           Como funciona
         </span>
         <h2 className="font-display text-3xl md:text-5xl font-light mt-4 text-foreground">
-          Da configuração ao deploy em <span className="italic">3 passos</span>.
+          Da configuração à implantação em <span className="italic">3 passos</span>.
         </h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">

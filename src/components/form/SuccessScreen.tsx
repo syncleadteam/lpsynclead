@@ -7,7 +7,13 @@ function brl(v: number) {
   return v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
-export function SuccessScreen({ result, clientName }: { result: SubmitResult; clientName: string }) {
+export function SuccessScreen({
+  result,
+  clientName,
+}: {
+  result: SubmitResult;
+  clientName: string;
+}) {
   const message = encodeURIComponent(
     `Olá! Sou ${clientName}. Gostaria de agendar um teste da automação que configurei (orçamento ${result.quoteId.slice(
       0,
@@ -27,7 +33,8 @@ export function SuccessScreen({ result, clientName }: { result: SubmitResult; cl
             Seu orçamento está pronto
           </h3>
           <p className="text-sm text-muted-foreground max-w-md">
-            Recebemos sua configuração. Confira o investimento estimado abaixo e agende um teste com nossa equipe.
+            Recebemos sua configuração. Confira o investimento estimado abaixo e agende um teste com
+            nossa equipe.
           </p>
         </div>
       </div>

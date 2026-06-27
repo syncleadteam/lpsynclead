@@ -27,7 +27,7 @@ export function FinalCta() {
             </span>
           </h2>
           <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto mb-10">
-            Fale agora com nossa equipe pelo WhatsApp — e veja, nosso próprio chatbot em ação.
+            Fale agora com nossa equipe pelo WhatsApp — e veja nosso próprio chatbot em ação.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a

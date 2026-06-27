@@ -35,7 +35,7 @@ export function Step2Agents({ selectedAgentCodes, catalog, onToggle, error }: Pr
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
         {catalog.agents.length === 0 && (
           <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5 text-sm text-muted-foreground lg:col-span-3">
-            Nenhum agente ativo no CRM para exibir no formulario.
+            Nenhum agente ativo no CRM para exibir no formulário.
           </div>
         )}
         {catalog.agents.map((agent, index) => {
