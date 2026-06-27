@@ -12,11 +12,11 @@ const faqs = [
   },
   {
     q: "Funciona para o meu nicho?",
-    a: "Sim. Já rodamos automações em saúde, estética, educação, e-commerce, serviços B2B, imobiliário, infoprodutos e SaaS. A engine se adapta ao seu fluxo comercial — não o contrário.",
+    a: "Sim. Já rodamos automações em saúde, estética, educação, e-commerce, serviços B2B, imobiliário, infoprodutos e SaaS. O sistema se adapta ao seu fluxo comercial, não o contrário.",
   },
   {
     q: "É difícil de configurar?",
-    a: "Não. Você preenche este formulário, a gente conecta seu WhatsApp/CRM e treina a IA com seu material. Em poucos dias, tudo está no ar — sem você precisar mexer em código.",
+    a: "Não. Você preenche este formulário, a gente conecta seu WhatsApp e CRM e treina a IA com seu material. Em poucos dias, tudo está no ar — sem você precisar mexer em código.",
   },
   {
     q: "E se a IA não souber responder algo?",
@@ -26,13 +26,33 @@ const faqs = [
     q: "Meus dados ficam seguros?",
     a: "Sim. Toda comunicação é criptografada e os dados ficam em infraestrutura compatível com LGPD. Você é dono total das conversas e pode exportar quando quiser.",
   },
+  {
+    q: "Preciso contratar todos os agentes de uma vez?",
+    a: "Não. Você pode começar com o agente mais urgente para sua operação e evoluir depois. O formulário mostra agentes acumulativos para facilitar a comparação entre atendimento, vendas e suporte automatizado.",
+  },
+  {
+    q: "Posso alterar os módulos individualmente?",
+    a: "Nesta etapa, não. Os módulos já vêm organizados por agente para evitar configurações frágeis. Isso garante que cada automação tenha a base técnica necessária para funcionar bem desde o início.",
+  },
+  {
+    q: "Os leads do formulário entram no CRM automaticamente?",
+    a: "Sim. Ao concluir o formulário, os dados são enviados para o CRM e organizados em visão geral, contas, contatos, oportunidades e funil, com o valor estimado da automação selecionada.",
+  },
+  {
+    q: "Como funciona o suporte automatizado?",
+    a: "O suporte automatizado atua como uma camada técnica inteligente, com registro de compromissos, consulta de agenda e bloqueio de números para manter a operação mais controlada e rápida.",
+  },
+  {
+    q: "O orçamento mostrado no formulário é definitivo?",
+    a: "Não. Ele é uma estimativa inicial com base nos agentes selecionados. Antes da implantação, validamos escopo, integrações, volume de atendimento e regras específicas da sua operação.",
+  },
 ];
 
 export function FaqSection() {
   return (
     <section id="faq" className="py-14 md:py-20 px-6 max-w-3xl mx-auto">
       <div className="mb-12 text-center">
-        <span className="text-xs uppercase tracking-widest text-primary font-medium">FAQ</span>
+        <span className="text-xs uppercase tracking-widest text-primary font-medium">Dúvidas</span>
         <h2 className="font-display text-3xl md:text-5xl font-light mt-4 text-foreground">
           Dúvidas <span className="italic">frequentes</span>.
         </h2>

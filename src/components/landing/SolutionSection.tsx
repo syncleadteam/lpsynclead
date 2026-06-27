@@ -8,7 +8,7 @@ const items = [
   },
   {
     icon: Clock3,
-    title: "Disponibilidade 24/7",
+    title: "Disponibilidade contínua",
     desc: "Atendimento instantâneo de domingo a domingo. Sem feriado, sem pausa para o café e sem fila.",
   },
   {
