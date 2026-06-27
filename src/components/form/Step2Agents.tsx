@@ -41,21 +41,35 @@ export function Step2Agents({ selectedAgentCodes, catalog, onToggle, error }: Pr
         {catalog.agents.map((agent, index) => {
           const isSelected = selected.has(agent.code);
           const includedModules = includedModulesForAgent(agent.code, catalog);
+          const previousModuleCodes = new Set(
+            catalog.agents
+              .slice(0, index)
+              .flatMap((previousAgent) =>
+                includedModulesForAgent(previousAgent.code, catalog).map((module) => module.code),
+              ),
+          );
+          const visibleModules = includedModules.filter(
+            (module) => !previousModuleCodes.has(module.code),
+          );
           const includedTotal = includedModules.reduce((sum, module) => sum + module.price, 0);
           const price = agent.price + includedTotal;
+          const agentName =
+            agent.code === "support_agent"
+              ? "Agente de Vendas com Suporte Automatizado"
+              : agent.name;
 
           return (
             <button
               key={agent.code}
               type="button"
               onClick={() => onToggle(agent.code, !isSelected)}
-              className={`w-full rounded-xl border p-5 text-left transition-all ${
+              className={`flex h-full w-full flex-col items-stretch rounded-xl border p-5 text-left align-top transition-all ${
                 isSelected
                   ? "border-primary bg-primary/5 shadow-[0_0_30px_-10px_hsl(217_91%_60%/0.5)]"
                   : "border-white/10 bg-white/[0.02] hover:border-white/20"
               }`}
             >
-              <span className="flex flex-col gap-4">
+              <span className="flex h-full flex-col items-stretch gap-4">
                 <span className="flex items-start justify-between gap-4">
                   <span
                     className={`font-display text-3xl font-light tabular-nums ${
@@ -76,7 +90,7 @@ export function Step2Agents({ selectedAgentCodes, catalog, onToggle, error }: Pr
                 </span>
 
                 <span>
-                  <span className="block font-medium text-foreground">{agent.name}</span>
+                  <span className="block font-medium text-foreground">{agentName}</span>
                   {agent.description ? (
                     <span className="mt-1 block text-xs text-muted-foreground">
                       {agent.description}
@@ -86,15 +100,15 @@ export function Step2Agents({ selectedAgentCodes, catalog, onToggle, error }: Pr
 
                 <span>
                   <span className="text-[10px] font-medium uppercase tracking-widest text-muted-foreground">
-                    Módulos inclusos
+                    {index === 0 ? "Módulos inclusos" : "Novos módulos inclusos"}
                   </span>
                   <span className="mt-2 flex flex-col gap-2">
-                    {includedModules.length === 0 ? (
+                    {visibleModules.length === 0 ? (
                       <span className="rounded-md border border-white/10 px-2 py-1 text-xs text-muted-foreground">
                         Módulos em definição
                       </span>
                     ) : (
-                      includedModules.map((module) => (
+                      visibleModules.map((module) => (
                         <span
                           key={module.code}
                           className="rounded-md border border-white/10 bg-white/[0.03] px-3 py-2 text-xs text-muted-foreground"
