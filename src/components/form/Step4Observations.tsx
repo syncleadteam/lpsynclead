@@ -8,7 +8,7 @@ export function Step4Observations({ value, onChange }: Props) {
     <div className="space-y-6">
       <div>
         <div className="text-[10px] uppercase tracking-widest text-primary font-medium mb-2">
-          Etapa 3 de 3
+          Etapa 3 de 4
         </div>
         <h3 className="font-display text-2xl md:text-3xl font-light text-foreground mb-2">
           Observações{" "}

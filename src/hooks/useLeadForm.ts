@@ -9,7 +9,7 @@ import {
 import { quantityForAgentCount } from "@/lib/pricing";
 import { fetchLandingCatalog, submitLead } from "@/services/leadService";
 
-export const TOTAL_STEPS = 3;
+export const TOTAL_STEPS = 4;
 
 export function useLeadForm() {
   const [step, setStep] = useState(1);

@@ -1,5 +1,5 @@
 import { AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2, Send } from "lucide-react";
 import { toast } from "sonner";
 import { useLeadForm, TOTAL_STEPS } from "@/hooks/useLeadForm";
 import { StepShell } from "./StepShell";
@@ -12,13 +12,19 @@ const stepperGroups = [
   { label: "Perfil", steps: [1] },
   { label: "Agentes", steps: [2] },
   { label: "Observações", steps: [3] },
-  { label: "Enviar", steps: [] as number[] },
+  { label: "Enviar", steps: [4] },
 ];
 
 export function LeadForm() {
   const f = useLeadForm();
 
-  const activeGroup = f.result ? 4 : stepperGroups.findIndex((g) => g.steps.includes(f.step));
+  const activeGroup = f.result
+    ? stepperGroups.length
+    : stepperGroups.findIndex((g) => g.steps.includes(f.step));
+
+  const selectedAgents = f.catalog.agents.filter((agent) =>
+    f.state.selected_agent_codes.includes(agent.code),
+  );
 
   async function handleNext() {
     if (f.catalogLoading) {
@@ -143,6 +149,57 @@ export function LeadForm() {
                   {f.step === 3 && (
                     <Step4Observations value={f.state.observations} onChange={f.setObservations} />
                   )}
+                  {f.step === 4 && (
+                    <div className="space-y-6">
+                      <div>
+                        <div className="text-[10px] uppercase tracking-widest text-primary font-medium mb-2">
+                          Etapa 4 de 4
+                        </div>
+                        <h3 className="font-display text-2xl md:text-3xl font-light text-foreground mb-2">
+                          Revise e envie sua configuração
+                        </h3>
+                        <p className="text-sm text-muted-foreground max-w-lg">
+                          Confira os dados principais antes de gerar o orçamento e solicitar o
+                          teste.
+                        </p>
+                      </div>
+
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.02] divide-y divide-white/5">
+                        <div className="grid gap-1 p-4 md:grid-cols-[160px_1fr]">
+                          <span className="text-xs uppercase tracking-widest text-muted-foreground">
+                            Empresa
+                          </span>
+                          <span className="text-sm text-foreground">
+                            {f.state.client.company_name}
+                          </span>
+                        </div>
+                        <div className="grid gap-1 p-4 md:grid-cols-[160px_1fr]">
+                          <span className="text-xs uppercase tracking-widest text-muted-foreground">
+                            Contato
+                          </span>
+                          <span className="text-sm text-foreground">
+                            {f.state.client.client_name} · {f.state.client.phone}
+                          </span>
+                        </div>
+                        <div className="grid gap-1 p-4 md:grid-cols-[160px_1fr]">
+                          <span className="text-xs uppercase tracking-widest text-muted-foreground">
+                            Agentes
+                          </span>
+                          <span className="text-sm text-foreground">
+                            {selectedAgents.map((agent) => agent.name).join(", ")}
+                          </span>
+                        </div>
+                        <div className="grid gap-1 p-4 md:grid-cols-[160px_1fr]">
+                          <span className="text-xs uppercase tracking-widest text-muted-foreground">
+                            Observações
+                          </span>
+                          <span className="text-sm text-foreground">
+                            {f.state.observations || "Sem observações adicionais."}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </StepShell>
               )}
             </AnimatePresence>
@@ -177,8 +234,8 @@ export function LeadForm() {
                   </>
                 ) : f.step === TOTAL_STEPS ? (
                   <>
-                    Finalizar
-                    <ArrowRight className="size-4" />
+                    Enviar
+                    <Send className="size-4" />
                   </>
                 ) : (
                   <>
