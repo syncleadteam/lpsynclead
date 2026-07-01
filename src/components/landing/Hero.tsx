@@ -24,7 +24,7 @@ export function Hero() {
         className="inline-flex items-center gap-2 px-8 py-4 text-primary-foreground font-medium rounded-xl hover:brightness-110 transition-all"
         style={{ background: "var(--gradient-primary)", boxShadow: "var(--shadow-glow)" }}
       >
-        Configurar minha automação
+        Automatizar atendimento
       </a>
     </header>
   );

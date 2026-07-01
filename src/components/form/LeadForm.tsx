@@ -59,7 +59,9 @@ export function LeadForm() {
                 <div className="mb-4 flex size-10 items-center justify-center rounded-xl bg-primary/20">
                   <div className="size-2 animate-pulse rounded-full bg-primary" />
                 </div>
-                <h2 className="font-display text-2xl font-medium text-foreground">Configurador</h2>
+                <h2 className="font-display text-2xl font-medium text-foreground">
+                  Briefing de automação
+                </h2>
                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
                   Personalize sua infraestrutura de atendimento sob medida.
                 </p>
